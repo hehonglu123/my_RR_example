@@ -11,6 +11,7 @@ c=RRN.ConnectService(url)
 
 i=0
 while True:
+	print(c.turtle_dict.keys())
 	print(c.turtle_dict['turtle'+str(i)].turtle_pose.x)
 	i+=1
 	time.sleep(1)
