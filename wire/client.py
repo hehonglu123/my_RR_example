@@ -15,14 +15,11 @@ if (len(sys.argv)>=2):
 ########subscription mode
 def connect_failed(s, client_id, url, err):
     print ("Client connect failed: " + str(client_id.NodeID) + " url: " + str(url) + " error: " + str(err))
+
 sub=RRN.SubscribeService(url)
-while True:
-	try:
-		obj = sub.GetDefaultClient()
-		turtle_change=sub.SubscribeWire("turtle_change")
-		break
-	except RR.ConnectionException:
-		time.sleep(0.1)
+obj = sub.GetDefaultClientWait(30)		#connect, timeout=30s
+turtle_change=sub.SubscribeWire("turtle_change")
+
 
 sub.ClientConnectFailed += connect_failed
 
