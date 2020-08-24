@@ -16,6 +16,8 @@ class create_impl(object):
 		self.value=1
 	def update(self):
 		self.value=np.invert(self.value)
+		# print(dir(self.turtle_change))
+		# raise Exception("exit")
 		self.turtle_change.OutValue=self.value
 
 with RR.ServerNodeSetup("experimental.minimal_create", 52222):
