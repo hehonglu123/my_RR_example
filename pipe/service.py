@@ -14,23 +14,11 @@ end object
 class create_impl(object):
 	def __init__(self):   
 		self._turtlechange=None
-
 		self.value=1
-
-	#turtle_change pipe member property getter and setter
-	@property
-	def turtle_change(self):
-		return self._turtlechange
-	@turtle_change.setter
-	def turtle_change(self,value):
-		self._turtlechange=value
-		#Create the PipeBroadcaster and set backlog to 3 so packets
-		#will be dropped if the transport is overloaded
-		self._turtlechange_broadcaster=RR.PipeBroadcaster(value,1)
 
 	def update(self):
 		self.value=np.invert(self.value)
-		self._turtlechange_broadcaster.AsyncSendPacket(self.value,lambda: None)   
+		self.turtle_change.SendPacket(self.value)   
 
 with RR.ServerNodeSetup("experimental.minimal_create", 52222):
 	#Register the service type
