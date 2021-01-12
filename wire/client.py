@@ -25,6 +25,10 @@ sub.ClientConnectFailed += connect_failed
 
 while True:
 	time.sleep(0.1)
-	if turtle_change.TryGetInValue()[0]:
-		print(turtle_change.InValue)
+	wire_packet=turtle_change.TryGetInValue()
+	if wire_packet[0]:
+		capture_time=float(wire_packet[2].seconds+wire_packet[2].nanoseconds*1e-9)
+		now=RRN.NowTimeSpec()
+		now=float(now.seconds+now.nanoseconds*1e-9)
+		print(wire_packet[1],now-capture_time)
 		
