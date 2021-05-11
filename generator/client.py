@@ -12,7 +12,7 @@ c=RRN.ConnectService(url)
 
 #Connect the pipe FrameStream to get the PipeEndpoint p
 temp=c.iterate(1,10)
-start_val=temp.next()
+# start_val=temp.next()
 
 while (True):
     try:

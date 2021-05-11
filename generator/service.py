@@ -2,6 +2,7 @@ import RobotRaconteur as RR
 RRN=RR.RobotRaconteurNode.s
 import time, threading
 import numpy as np
+from RobotRaconteur.RobotRaconteurPythonError import StopIterationException
 
 minimal_create_interface="""
 service experimental.minimal_create
@@ -19,6 +20,9 @@ class create_impl(object):
 	def iterate(self,a,b):
 		for i in range(a,b):
 			yield i
+			if i==b-1:
+				raise StopIterationException("Procedure completed")
+				return
 
 with RR.ServerNodeSetup("experimental.minimal_create", 52222):
 	#Register the service type
