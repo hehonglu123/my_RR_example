@@ -16,7 +16,7 @@ temp=c.iterate(1,10)
 
 while (True):
     try:
-        start_val=temp.next()
+        start_val=temp.Next()
         print(start_val)
     except RR.StopIterationException:
         break
