@@ -11,18 +11,36 @@ object create_obj
 	function double{generator} iterate(int32 a, int32 b)
 end object
 """
+class iter_gen(object):
+	def __init__(self,a,b):
+		self.a=a
+		self.b=b
+		self.value=a
+		self._aborted=False
+
+	def Next(self):
+		if self._aborted:
+			raise OperationAbortedException()
+		
+		if self.value>=self.b:
+			raise StopIterationException()
+		
+		self.value+=1
+		return self.value
+		
+	def Abort(self):
+		self._aborted=True
+		
+	def Close(self):
+		raise StopIterationException()
+
 
 class create_impl(object):
 	def __init__(self):   
-		self._turtlechange=None
 		self.value=1
 
 	def iterate(self,a,b):
-		for i in range(a,b):
-			yield i
-			if i==b-1:
-				raise StopIterationException("Procedure completed")
-				return
+		return iter_gen(a,b)
 
 with RR.ServerNodeSetup("experimental.minimal_create", 52222):
 	#Register the service type
