@@ -20,12 +20,24 @@ class create_impl(object):
 		self.value=np.invert(self.value)
 		self.turtle_change.SendPacket(self.value)
 
-	def new_frame(pipe_ep):
-	    print(self.turtle_change)
-	    #Loop to get the newest frame
-	    while (pipe_ep.Available > 0):
-	        #Receive the packet
-	        self.turtle_change=pipe_ep.ReceivePacket()
+	#pipes
+	@property
+	def turtle_change(self):
+		return self._turtle_change
+	@turtle_change.setter
+	def turtle_change(self,value):
+		self._turtle_change=value
+		value.PipeConnectCallback=(self.p1_connect_callback)
+
+	def p1_connect_callback(self,p):
+		p.RequestPacketAck=True
+		p.PacketReceivedEvent+=self.p1_packet_received
+
+	def p1_packet_received(self,p):
+		while p.Available:
+			dat=p.ReceivePacket()
+			print(dat)
+	   
 
 
 with RR.ServerNodeSetup("experimental.minimal_create", 52222):
@@ -37,11 +49,5 @@ with RR.ServerNodeSetup("experimental.minimal_create", 52222):
 	#Register the service
 	RRN.RegisterService("Create","experimental.minimal_create.create_obj",create_inst)
 	
-	#Connect the pipe FrameStream to get the PipeEndpoint p
-	p=create_inst.turtle_change.Connect(-1)
-
-	#Set the callback for when a new pipe packet is received to the
-	#new_frame function
-	p.PacketReceivedEvent+=create_inst.new_frame
 
 	input("press enter to quit")

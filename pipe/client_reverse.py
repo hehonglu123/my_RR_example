@@ -1,5 +1,6 @@
 from RobotRaconteur.Client import *     #import RR client library
 import time, traceback, sys
+import numpy as np
 
 turtle_change=0
 
@@ -16,6 +17,8 @@ c=RRN.ConnectService(url)
 value=1
 while True:
 	value=np.invert(value)
-	c.turtle_change.SendPacket(c.value)   
+	p=c.turtle_change.Connect(-1)
+
+	p.SendPacket(value)   
 	time.sleep(1.)
 	
