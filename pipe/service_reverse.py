@@ -13,12 +13,7 @@ end object
 
 class create_impl(object):
 	def __init__(self):   
-		self._turtlechange=None
 		self.value=1
-
-	def update(self):
-		self.value=np.invert(self.value)
-		self.turtle_change.SendPacket(self.value)
 
 	#pipes
 	@property
@@ -30,7 +25,6 @@ class create_impl(object):
 		value.PipeConnectCallback=(self.p1_connect_callback)
 
 	def p1_connect_callback(self,p):
-		p.RequestPacketAck=True
 		p.PacketReceivedEvent+=self.p1_packet_received
 
 	def p1_packet_received(self,p):
