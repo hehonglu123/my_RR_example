@@ -1,0 +1,44 @@
+service edu.rpi.robotics.fusing_system
+
+stdver 0.10
+
+import com.robotraconteur.identifier
+import com.robotraconteur.device
+import com.robotraconteur.eventlog
+
+using com.robotraconteur.identifier.Identifier
+using com.robotraconteur.device.DeviceInfo
+using com.robotraconteur.device.Device
+using com.robotraconteur.eventlog.EventLogMessage
+
+struct FabricInfo
+	field Identifier fabric_id
+	field double voltage
+	field string fabric_name
+end
+
+struct FusingOperationTrigger
+	field uint32 number_of_operations
+	field bool finished
+end
+
+struct FusingConfigData
+	field double[] over_fuse_pose
+	field double[] over_interlining_pose
+	field double[] over_ply_pose
+end
+
+object FusingSystem
+	implements Device
+	property DeviceInfo device_info [readonly,nolock]
+	property EventLogMessage{list} current_errors [readonly, nolock]
+	pipe FusingOperationTrigger trigger_fusing_system [writeonly]
+	property FabricInfo current_ply_fabric_type
+	property FabricInfo current_interlining_fabric_type
+	property FusingConfigData fusing_config_data
+	wire     bool[] sensor_readings		[readonly]
+	callback bool operation_feedback(uint32 current_operation_count)
+	function void initialize()
+	function void stop_fusing()
+end
+	
