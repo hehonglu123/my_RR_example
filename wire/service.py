@@ -28,7 +28,7 @@ with RR.ServerNodeSetup("experimental.minimal_create", 52222):
 	
 	#Register the service
 	RRN.RegisterService("Create","experimental.minimal_create.create_obj",create_inst)
-	
+	print('press ctrl+c to quit')
 	while True:
 		create_inst.update()
 		time.sleep(1)
